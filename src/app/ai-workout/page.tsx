@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import RequireAuth from "@/components/RequireAuth";
 import { supabase } from "@/lib/supabase";
 
@@ -80,13 +81,11 @@ async function handleSaveWorkout() {
   setSaveMessage("Workout saved successfully!");
 }
   return (
-    <main className="min-h-screen bg-black p-4 text-white sm:p-8">
+    <main className="min-h-screen bg-[var(--background)] p-4 text-[var(--foreground)] sm:p-8">
       <div className="mx-auto max-w-3xl">
-        <h1 className="mb-8 text-3xl font-bold sm:text-4xl">
-          Generate Your Workout
-        </h1>
+        <div className="rq-enter mb-8"><p className="rq-accent text-xs font-bold uppercase tracking-[0.2em]">Your on-demand coach</p><h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Generate a Workout</h1><p className="rq-muted mt-2">Give us the goal. We’ll shape the session.</p></div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="rq-enter rq-delay-1 rq-surface space-y-6 rounded-2xl p-5 shadow-[0_12px_32px_rgba(20,40,20,0.08)] sm:p-7">
           <label className="block text-sm text-zinc-400">
             What is your fitness goal?
           </label>
@@ -94,7 +93,7 @@ async function handleSaveWorkout() {
             required
             value={goal}
             onChange={(e) => setGoal(e.target.value)}
-            className="w-full rounded bg-zinc-900 p-3"
+            className="w-full rounded-xl border border-black/10 bg-[var(--background)] p-3 text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
             placeholder="Fitness goal, for example: Build Muscle"
           />
 
@@ -104,7 +103,7 @@ async function handleSaveWorkout() {
           <input
             value={equipment}
             onChange={(e) => setEquipment(e.target.value)}
-            className="w-full rounded bg-zinc-900 p-3"
+            className="w-full rounded-xl border border-black/10 bg-[var(--background)] p-3 text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
             placeholder="Available equipment"
           />
 
@@ -115,7 +114,7 @@ async function handleSaveWorkout() {
 <select
   value={experience}
   onChange={(e) => setExperience(e.target.value)}
-  className="w-full rounded bg-zinc-900 p-3"
+  className="w-full rounded-xl border border-black/10 bg-[var(--background)] p-3 text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
 >
   <option>Beginner</option>
   <option>Intermediate</option>
@@ -134,7 +133,7 @@ async function handleSaveWorkout() {
               max="180"
               value={time}
               onChange={(e) => setTime(e.target.value)}
-              className="w-full rounded bg-zinc-900 p-3"
+              className="w-full rounded-xl border border-black/10 bg-[var(--background)] p-3 text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
               placeholder="Example: 30"
             />
           </div>
@@ -146,30 +145,33 @@ async function handleSaveWorkout() {
             required
             value={workoutType}
             onChange={(e) => setWorkoutType(e.target.value)}
-            className="w-full rounded bg-zinc-900 p-3"
+            className="w-full rounded-xl border border-black/10 bg-[var(--background)] p-3 text-[var(--foreground)] outline-none focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/30"
             placeholder="Workout type, for example: Upper Body"
           />
 
-          <button
-            type="submit"
-            disabled={generating}
-            className="mx-auto block w-fit rounded bg-purple-600 px-6 py-3 hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50 sm:mx-0"
-          >
-            {generating ? "Generating..." : "Generate Workout"}
-          </button>
+          <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:items-center">
+            <button
+              type="submit"
+              disabled={generating}
+              className="rq-accent-button rq-interactive w-full rounded-full px-6 py-3.5 text-base font-black shadow-[0_8px_20px_rgba(163,230,53,0.22)] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:min-w-52"
+            >
+              {generating ? "Generating..." : "Generate Workout"}
+            </button>
+            <Link href="/dashboard" className="rq-interactive w-full px-3 py-2 text-center text-sm font-bold text-[var(--text-muted)] hover:text-[var(--foreground)] sm:w-auto">← Back to dashboard</Link>
+          </div>
         </form>
 
         {result && (
           <div className="mt-8">
             <h2 className="mb-4 text-2xl font-bold">Your Workout</h2>
 
-            <pre className="whitespace-pre-wrap rounded-xl bg-zinc-900 p-6">
+            <pre className="rq-surface mt-6 whitespace-pre-wrap rounded-2xl p-6 shadow-[0_12px_32px_rgba(20,40,20,0.08)]">
               {result}
             </pre>
             <button
   type="button"
     onClick={handleSaveWorkout}
-              className="mx-auto mt-4 block w-fit rounded bg-green-600 px-6 py-3 hover:bg-green-700 sm:mx-0"
+              className="rq-accent-button rq-interactive mx-auto mt-4 block w-fit rounded-full px-6 py-3 font-bold sm:mx-0"
 >
   Save Workout
 </button>
