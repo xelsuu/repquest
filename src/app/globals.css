@@ -49,6 +49,8 @@ body::after {
 
 body > * { position: relative; z-index: 1; }
 .rq-scroll-top { position: fixed !important; z-index: 40 !important; }
+.rq-accent-palette { position: fixed !important; z-index: 40 !important; }
+main > div[class*="bottom-20"] { display: none !important; }
 .rq-scroll-chevron { width: 0.8rem; height: 0.8rem; border-top: 2px solid currentColor; border-left: 2px solid currentColor; transform: translateY(0.15rem) rotate(45deg); }
 
 main {
@@ -92,7 +94,8 @@ article.rq-surface:hover { transform: translateY(-2px); box-shadow: 0 16px 36px 
 .rq-accent { color: var(--accent); }
 .rq-icon { color: var(--accent); font-size: 0.9em; line-height: 1; }
 .rq-brand-logo { display: inline-flex; align-items: center; line-height: 1; font-family: Arial, Helvetica, sans-serif; font-size: 1.12rem; font-weight: 800; letter-spacing: -0.035em; white-space: nowrap; }
-.rq-brand-rep { color: #f4f7f1; }
+.rq-brand-rep { color: var(--foreground); }
+.rq-nav .rq-brand-rep { color: #f4f7f1; }
 .rq-brand-quest { margin-left: 0.24rem; padding: 0.18rem 0.3rem 0.16rem; color: var(--accent-ink); background: var(--accent); border-radius: 0.2rem; letter-spacing: -0.02em; }
 .rq-brand-logo-compact { font-size: 2.8rem; }
 

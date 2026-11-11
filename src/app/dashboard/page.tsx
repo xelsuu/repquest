@@ -38,6 +38,7 @@ function DashboardContent() {
   const [workouts, setWorkouts] = useState<Workout[]>([]);
   const [loading, setLoading] = useState(true);
   const [loginStreak, setLoginStreak] = useState(0);
+  const [firstName, setFirstName] = useState("Athlete");
   const [xpToast, setXpToast] = useState<{ amount: number; isPr: boolean } | null>(null);
   const [xpProgressStart, setXpProgressStart] = useState<number | null>(null);
   const [rankUp, setRankUp] = useState<{ from: string; to: string } | null>(null);
@@ -103,6 +104,8 @@ function DashboardContent() {
         setLoading(false);
         return;
       }
+      const metadataName = typeof user.user_metadata?.first_name === "string" ? user.user_metadata.first_name : "";
+      setFirstName(metadataName || user.email?.split("@")[0] || "Athlete");
 
       const { data, error } = await supabase
         .from("workouts")
@@ -196,7 +199,7 @@ function DashboardContent() {
       </div>
       <div className="mx-auto max-w-6xl">
         <div className="rq-enter mb-8 flex flex-col justify-between gap-5 sm:flex-row sm:items-end">
-          <div><p className="rq-accent text-xs font-bold uppercase tracking-[0.2em]">Your training HQ</p><h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Dashboard</h1><p className="rq-muted mt-2">Keep the streak alive and make today count.</p></div>
+          <div><p className="rq-accent text-xs font-bold uppercase tracking-[0.2em]">Your training HQ</p><h1 className="mt-2 text-4xl font-black tracking-tight sm:text-5xl">Welcome back, {firstName}</h1><p className="rq-muted mt-2">Keep the streak alive and make today count.</p></div>
           <Link href="/log-workout" className="rq-accent-button rq-interactive inline-flex w-fit items-center rounded-full px-5 py-3 text-sm font-bold">＋ Log a workout</Link>
         </div>
         {xpToast && <div role="status" className="rq-xp-pop fixed right-4 top-20 z-40 rounded-2xl border border-[var(--accent)]/40 bg-[var(--surface)] px-5 py-3 text-center shadow-[0_14px_40px_rgba(0,0,0,0.25)]"><p className="text-2xl font-black text-[var(--accent)]">+{xpToast.amount} XP</p><p className="text-xs font-bold uppercase tracking-[0.16em]">{xpToast.isPr ? "Personal record" : "Workout logged"}</p></div>}

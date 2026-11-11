@@ -27,6 +27,7 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isLight, setIsLight] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useState<{ id: string } | null>(null);
 
   useEffect(() => {
     const saved = window.localStorage.getItem("repquest-theme");
@@ -37,6 +38,9 @@ export default function Navbar() {
       document.documentElement.style.setProperty("--accent", accentColors[savedAccent]);
       document.documentElement.style.setProperty("--accent-ink", "#102010");
     }
+    void supabase.auth.getUser().then(({ data }) => setUser(data.user ? { id: data.user.id } : null));
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => setUser(session?.user ? { id: session.user.id } : null));
+    return () => authListener.subscription.unsubscribe();
   }, []);
 
   function toggleTheme() {
@@ -77,12 +81,11 @@ export default function Navbar() {
             </Link>;
           })}
           <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3 sm:mt-0 sm:flex-nowrap sm:border-0 sm:pt-0">
-            <Link href="/login" onClick={() => setMenuOpen(false)} className="rq-interactive rounded-lg px-3 py-2 text-sm font-bold text-white/75 hover:bg-white/10 hover:text-white">Log In</Link>
-            <Link href="/signup" onClick={() => setMenuOpen(false)} className="rq-interactive rounded-lg px-3 py-2 text-sm font-bold text-white/75 hover:bg-white/10 hover:text-white">Sign Up</Link>
+            {!user && <><Link href="/login" onClick={() => setMenuOpen(false)} className="rq-interactive rounded-lg px-3 py-2 text-sm font-bold text-white/75 hover:bg-white/10 hover:text-white">Log In</Link><Link href="/signup" onClick={() => setMenuOpen(false)} className="rq-interactive rounded-lg px-3 py-2 text-sm font-bold text-white/75 hover:bg-white/10 hover:text-white">Sign Up</Link></>}
             <button type="button" onClick={toggleTheme} className="rq-interactive ml-auto rounded-full border border-white/20 px-3 py-1.5 text-xs font-bold text-white/80 hover:text-white" aria-label={`Switch to ${isLight ? "dark" : "light"} mode`}>
               {isLight ? "☾ Dark" : "☀ Light"}
             </button>
-            <button type="button" onClick={handleLogout} className="rq-interactive rounded-lg px-3 py-2 text-sm font-bold text-red-300 hover:bg-red-400/10 hover:text-red-200">Log Out</button>
+            {user && <button type="button" onClick={handleLogout} className="rq-interactive rounded-lg px-3 py-2 text-sm font-bold text-red-300 hover:bg-red-400/10 hover:text-red-200">Log Out</button>}
           </div>
         </div>
         {menuOpen && <div id="mobile-navigation" style={{ position: "fixed", top: "4rem", left: 0, right: 0, zIndex: 99999, display: "flex", flexDirection: "column", alignItems: "stretch", maxHeight: "calc(100vh - 4rem)", overflowY: "auto", background: "var(--nav)", color: "white", padding: "1rem", gap: "0.5rem", borderBottom: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 20px 40px rgba(0,0,0,0.35)" }} className="sm:hidden">
@@ -93,10 +96,9 @@ export default function Navbar() {
             </Link>;
           })}
           <div className="mt-2 flex flex-wrap items-center gap-2 border-t border-white/10 pt-3">
-            <Link href="/login" onClick={() => setMenuOpen(false)} className="rq-interactive rounded-lg px-3 py-3 text-sm font-bold text-white/75 hover:bg-white/10 hover:text-white">Log In</Link>
-            <Link href="/signup" onClick={() => setMenuOpen(false)} className="rq-interactive rounded-lg px-3 py-3 text-sm font-bold text-white/75 hover:bg-white/10 hover:text-white">Sign Up</Link>
+            {!user && <><Link href="/login" onClick={() => setMenuOpen(false)} className="rq-interactive rounded-lg px-3 py-3 text-sm font-bold text-white/75 hover:bg-white/10 hover:text-white">Log In</Link><Link href="/signup" onClick={() => setMenuOpen(false)} className="rq-interactive rounded-lg px-3 py-3 text-sm font-bold text-white/75 hover:bg-white/10 hover:text-white">Sign Up</Link></>}
             <button type="button" onClick={toggleTheme} className="rq-interactive rounded-full border border-white/20 px-3 py-2 text-xs font-bold text-white/80 hover:text-white" aria-label={`Switch to ${isLight ? "dark" : "light"} mode`}>{isLight ? "☾ Dark" : "☀ Light"}</button>
-            <button type="button" onClick={handleLogout} className="rq-interactive rounded-lg px-3 py-3 text-sm font-bold text-red-300 hover:bg-red-400/10 hover:text-red-200">Log Out</button>
+            {user && <button type="button" onClick={handleLogout} className="rq-interactive rounded-lg px-3 py-3 text-sm font-bold text-red-300 hover:bg-red-400/10 hover:text-red-200">Log Out</button>}
           </div>
         </div>}
       </nav>

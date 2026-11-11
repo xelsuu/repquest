@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import ScrollToTop from "@/components/ScrollToTop";
+import AccentPalette from "@/components/AccentPalette";
 
 export const metadata: Metadata = {
   title: "RepQuest",
@@ -18,6 +19,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         <Navbar />
         <ScrollToTop />
+        <AccentPalette />
         {children}
       </body>
     </html>
