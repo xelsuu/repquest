@@ -39,7 +39,7 @@ export async function proxy(request: NextRequest) {
   const privatePages = [
     "/dashboard",
     "/log-workout",
-    "/feed",
+    "/history",
     "/ai-workout",
   ];
 
@@ -58,7 +58,7 @@ export const config = {
   matcher: [
     "/dashboard/:path*",
     "/log-workout/:path*",
-    "/feed/:path*",
+    "/history/:path*",
     "/ai-workout/:path*",
   ],
 };

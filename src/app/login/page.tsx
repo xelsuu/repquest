@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import { updateLoginStreak } from "@/lib/progression";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -28,6 +29,7 @@ export default function Login() {
       return;
     }
 
+    updateLoginStreak();
     router.push("/dashboard");
     router.refresh();
   }

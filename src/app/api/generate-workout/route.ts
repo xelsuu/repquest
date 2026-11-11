@@ -9,7 +9,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
 
-    const { goal, equipment, experience, time, workoutType } = body;
+    const { goal, equipment, experience, time, workoutType, workout } = body;
     if (!goal || !experience || !time || !workoutType) {
   return NextResponse.json(
     { error: "Please complete all required workout fields." },
@@ -26,14 +26,16 @@ Goal: ${goal}
 Equipment: ${equipment || "Bodyweight"}
 Experience: ${experience}
 Time available: ${time} minutes
+Workout: ${workout}
 Workout type: ${workoutType}
 
-Return:
-1. A warm-up
-2. Three to five exercises
-3. Sets and repetitions
-4. Rest times
-5. A cool-down
+Return valid JSON only, with this exact shape:
+{
+  "warmup": "short warm-up instructions",
+  "exercises": [{ "name": "exercise name", "sets": 3, "reps": 10 }],
+  "cooldown": "short cool-down instructions"
+}
+Return three to five exercises that fit the selected workout and type. Use integer reps and sets.
 `,
     });
 
